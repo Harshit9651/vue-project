@@ -2,12 +2,7 @@
   <div>
     <h1>fabric.js</h1>
     <div>
-      <canvas
-        id="fabricCanvas"
-        width="800"
-        heigh="600"
-        style="border: 1px solid black"
-      ></canvas>
+      <canvas id="fabricCanvas" style="border: 1px solid black"></canvas>
     </div>
     <!-- buttons -->
     <div class="buttons">
@@ -25,14 +20,50 @@ const canvas = ref(null);
 onMounted(() => {
   canvas.value = new fabric.Canvas("fabricCanvas");
 });
-const drawRectangle =()=>{
-    const rect = new fabric.rect({
-        left:100,
-        top:100,
-        fill:'red',
-        height:100,
-        width:100,
+const drawRectangle = () => {
+  const rect = new fabric.Rect({
+    left: 100,
+    top: 100,
+    fill: "red",
+    height: 100,
+    width: 100,
+  });
+  canvas.value.add(rect);
+};
+const drawCircle = ()=>{
+  const circle = new fabric.Circle({
+   left:50,
+   top:10,
+   fill:'pink',
+   radius:50,
+  })
+  canvas.value.add(circle)
+}
+const drawPancil = ()=>{
+  canvas.value.isDrawingMode =true
+}
+const uploadImage = (event)=>{
+  const file = event.target.files[0];
+  if(!file) return
+  const reader = new FileReader();
+  reader.onload = function(e){
+    fabric.Image.fromURL(e.target.result,function(img){
+      img.set({
+        left:10,
+        top:10,
+        scaleX:0.5,
+        scaleY:0.5
+      })
+      canvas.value.add(img)
     })
-    canvas.value.add(rect)
+  }
+  reader.readAsDataURL(file)
 }
 </script>
+<style lang="scss" scoped>
+canvas {
+  height: 700px;
+  width: 900px;
+  background-color: aqua;
+}
+</style>

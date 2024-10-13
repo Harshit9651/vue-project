@@ -13,7 +13,6 @@ const routes = [
     path: "/",
   },
 ];
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
