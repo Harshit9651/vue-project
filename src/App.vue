@@ -23,12 +23,12 @@ function initCanvas() {
     "https://images.pexels.com/photos/16465970/pexels-photo-16465970/free-photo-of-a-woman-posing-in-a-vast-yellow-flower-field.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
     function (img) {
       img.set({
-        left: 50,
-        top: 50,
-        scaleX: 0.5,
-        scaleY: 0.5,
-        width: 2000,
-        height: 1000,
+        left: 0,
+        top: 0,
+        scaleX: 1,
+        scaleY: 1,
+        width: 500,
+        height: 500,
       });
       canvas.add(img);
     }
@@ -43,8 +43,8 @@ onMounted(() => {
 <style lang="scss" scoped>
 .page-wrapper {
   .canvas-wrapper {
-    width: 56.25rem;
-    height: 31.25rem;
+    width: 31.25rem;
+    height: 31.25rem; 
     display: flex;
     justify-content: center;
     align-items: center;
