@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-import {fabric} from 'fabric-with-erasing'
-import { onMounted,ref } from "vue";
+import { fabric } from "fabric-with-erasing";
+import { onMounted, ref } from "vue";
 
 let canvasElement;
 let canvas;
@@ -28,7 +28,7 @@ function initCanvas() {
         scaleX: 0.5,
         scaleY: 0.5,
         width: 2000,
-        height: 1000
+        height: 1000,
       });
       canvas.add(img);
     }
