@@ -1,24 +1,51 @@
 <template>
   <div>
-    <button @click="toggleSidebar" v-if="showslidbarbuttonvisible">show more</button>
-    <div class="slidbar" :style="{ display: isSidebarVisible ? 'flex' : 'none' }">
-  
+    <button
+      class="button"
+      @click="toggleSidebar"
+      v-if="showslidbarbuttonvisible"
+    >
+      show more
+    </button>
+    <div
+      class="slidbar"
+      :style="{ display: isSidebarVisible ? 'flex' : 'none' }"
+    >
       <h2>Sidebar Content</h2>
-      <i class="fa-solid fa-xmark"></i>
+
+      <button @click="checkslidbar" v-if="isslide">hide</button>
     </div>
-    <div class="content" :class="{ 'shifted': isSidebarVisible }">
+    <div class="content" :class="{ shifted: isSidebarVisible }">
       <h1>fabric.js</h1>
       <div>
-        <canvas id="fabricCanvas" style="border: 1px solid black"></canvas>
+        <div class="undo-redo">
+          <button @click="undo" class="button-undo-redo">Undo</button>
+          <button @click="redo" class="button-undo-redo">Redo</button>
+        </div>
+        <canvas id="fabricCanvas" style="border: 1px solid black"> </canvas>
       </div>
       <div class="buttons">
         <button class="button" @click="drawRectangle">Draw Rectangle</button>
         <button class="button" @click="drawCircle">Draw Circle</button>
         <button class="button" @click="drawPancil">Draw Pencil</button>
         <label class="button" for="fileUpload">Upload Image</label>
-        <input id="fileUpload" type="file" @change="uploadImage" accept="image/*" class="file-input" />
-        <label class="button" for="bgColorPicker">Change Background Color</label>
-        <input id="bgColorPicker" type="color" @input="changeBackgroundColor" hidden='true' class="color-picker button" />
+        <input
+          id="fileUpload"
+          type="file"
+          @change="uploadImage"
+          accept="image/*"
+          class="file-input"
+        />
+        <label class="button" for="bgColorPicker"
+          >Change Background Color</label
+        >
+        <input
+          id="bgColorPicker"
+          type="color"
+          @input="changeBackgroundColor"
+          hidden="true"
+          class="color-picker button"
+        />
       </div>
     </div>
   </div>
@@ -30,13 +57,58 @@ import { fabric } from "fabric-with-erasing";
 
 const canvas = ref(null);
 const isSidebarVisible = ref(false);
-const showslidbarbuttonvisible = ref(true)
+const showslidbarbuttonvisible = ref(true);
+const isslide = ref(false);
+const canvasStates = ref([]);
+const currentStateIndex = ref(-1);
 
 onMounted(() => {
   canvas.value = new fabric.Canvas("fabricCanvas");
   canvas.value.setWidth(1000);
   canvas.value.setHeight(500);
+  saveCanvasState();
 });
+const saveCanvasState = () => {
+  const json = canvas.value.toJSON();
+  if (currentStateIndex.value < canvasStates.value.length - 1) {
+    canvasStates.value = canvasStates.value.slice(
+      0,
+      currentStateIndex.value + 1
+    );
+  }
+  canvasStates.value.push(json);
+  currentStateIndex.value = canvasStates.value.length - 1;
+};
+
+
+
+const undo = () => {
+  
+  if (currentStateIndex.value > 0) {
+    console.log("undo is called")
+    currentStateIndex.value -= 1;
+    restoreCanvasState(canvasStates.value[currentStateIndex.value]);
+  }
+  console.log("undo is called without any index ")
+};
+
+const redo = () => {
+  
+  if (currentStateIndex.value < canvasStates.value.length - 1) {
+    console.log("redo is called")
+    currentStateIndex.value += 1;
+    restoreCanvasState(canvasStates.value[currentStateIndex.value]);
+  }
+  console.log("redo is called without any index ")
+};
+
+
+
+const restoreCanvasState = (state) => {
+  canvas.value.loadFromJSON(state, () => {
+    canvas.value.renderAll();
+  });
+};
 
 const drawRectangle = () => {
   const rect = new fabric.Rect({
@@ -83,18 +155,27 @@ const uploadImage = (event) => {
 
 const changeBackgroundColor = (event) => {
   const color = event.target.value;
-  canvas.value.setBackgroundColor(color, canvas.value.renderAll.bind(canvas.value));
+  canvas.value.setBackgroundColor(
+    color,
+    canvas.value.renderAll.bind(canvas.value)
+  );
 };
 
 // Toggle sidebar visibility
 const toggleSidebar = () => {
   isSidebarVisible.value = !isSidebarVisible.value;
-  showslidbarbuttonvisible.value =!showslidbarbuttonvisible.value;
+  showslidbarbuttonvisible.value = !showslidbarbuttonvisible.value;
+  isslide.value = !isslide.value;
+};
+const checkslidbar = () => {
+  isSidebarVisible.value = false;
+  showslidbarbuttonvisible.value = true;
+  isslide.value = false;
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@fortawesome/fontawesome-free/css/all.css';
+@import "@fortawesome/fontawesome-free/css/all.css";
 body {
   background-color: black;
   color: white;
@@ -114,12 +195,33 @@ body {
 }
 
 .content {
-  transition: margin-left 0.3s ease; 
+  transition: margin-left 0.3s ease;
   margin-left: 0;
 }
 
 .shifted {
   margin-left: 15%;
+}
+.undo-redo {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  .button-undo-redo {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    background-color: #67349ac0;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #442d7c;
+      transform: scale(1.05);
+    }
+  }
 }
 
 canvas {
@@ -164,6 +266,21 @@ canvas {
     display: inline-block;
     cursor: pointer;
     padding: 0.3rem;
+  }
+}
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #005fa3;
+    transform: scale(1.05);
   }
 }
 </style>
