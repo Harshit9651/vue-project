@@ -47,7 +47,7 @@ onMounted(() => {
     box-shadow: 1px -4px 15px -1px rgba(110, 62, 110, 1);
   }
   canvas {
-    border: 1px solid #ccc; /* Optional border for better visibility */
+    border: 1px solid #ccc; 
   }
 }
 </style>
