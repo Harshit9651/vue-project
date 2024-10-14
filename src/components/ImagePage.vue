@@ -59,6 +59,7 @@ function handleImageUpload(event) {
   }
 }
 
+
 onMounted(() => {
   const defaultImageUrl = "https://images.pexels.com/photos/6576802/pexels-photo-6576802.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load";
   initCanvas(defaultImageUrl);
