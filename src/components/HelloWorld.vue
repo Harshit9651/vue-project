@@ -152,6 +152,12 @@ const drawRectangle = () => {
     height: 100,
     width: 100,
     selectable: true,
+    shadow: {
+    color: 'rgba(0,0,0,0.2)',
+    blur: 10,
+    offsetX: 10,
+    offsetY: 10
+  }
   });
   canvas.value.add(rect);
   saveCanvasState();
@@ -174,6 +180,11 @@ const drawCircle = () => {
   }
   });
   canvas.value.add(circle);
+  circle.animate('left', 400, {
+      duration: 2000,
+      onChange: canvas.renderAll.bind(canvas),
+      easing: fabric.util.ease.easeInOutQuad
+    });
   saveCanvasState();
 };
 
