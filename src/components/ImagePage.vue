@@ -1,4 +1,7 @@
-<!-- <template>
+<!-- 
+
+
+   <template>
     <div class="page-wrapper">
       <div class="canvas-wrapper"><canvas id="canvas"></canvas></div>
     </div>
@@ -55,6 +58,4 @@
   }
   </style>
    -->
-
-
-   
+  
