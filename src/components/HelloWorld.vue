@@ -166,6 +166,12 @@ const drawCircle = () => {
     fill: objectColor.value,
     radius: 50,
     selectable: true,
+    shadow: {
+    color: 'rgba(0,0,0,0.6)',
+    blur: 10,
+    offsetX: 10,
+    offsetY: 10
+  }
   });
   canvas.value.add(circle);
   saveCanvasState();
