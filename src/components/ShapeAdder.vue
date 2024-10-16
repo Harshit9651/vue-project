@@ -10,18 +10,18 @@
   export default {
     name: "ShapeAdder",
     props: {
-      canvas: Object, // Pass the fabric canvas as a prop
+      canvas: Object, 
     },
     methods: {
       addRectangle() {
         const rect = new fabric.Rect({
-          left: 50,
-          top: 50,
+          left: 90,
+          top: 200,
           fill: "blue",
           width: 100,
           height: 100,
         });
-        this.canvas.add(rect); // Add rectangle to the canvas
+        this.canvas.add(rect); 
       },
       addCircle() {
         const circle = new fabric.Circle({
@@ -30,7 +30,7 @@
           radius: 50,
           fill: "green",
         });
-        this.canvas.add(circle); // Add circle to the canvas
+        this.canvas.add(circle); 
       },
     },
   };
