@@ -21,6 +21,9 @@ body{
 }
 
 </style> -->
+
+
+
 <template>
   <div id="app">
     <!-- Fabric.js canvas -->
@@ -37,8 +40,8 @@ body{
 
 <script>
 import { onMounted } from "vue";
-import { fabric } from "fabric"; // Import fabric.js
-
+// import { fabric } from "fabric"; 
+import {fabric} from 'fabric-with-erasing'
 export default {
   name: "App",
   setup() {
